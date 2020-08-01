@@ -14,6 +14,7 @@ type Player struct {
 type PlayerStore interface {
 	GetPlayerScore(name string) int
 	RecordWin(name string)
+	GetLeague() []Player
 }
 
 type PlayerServer struct {
@@ -24,6 +25,7 @@ type PlayerServer struct {
 type StubPlayerStore struct {
 	scores   map[string]int
 	winCalls []string
+	league   []Player
 }
 
 // func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -68,8 +70,9 @@ func (s *StubPlayerStore) RecordWin(name string) {
 }
 
 func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(p.getLeagueTable())
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("content-type", "application/json")
+	json.NewEncoder(w).Encode(p.store.GetLeague())
+	// w.WriteHeader(http.StatusOK)
 }
 
 func (p *PlayerServer) playersHandler(w http.ResponseWriter, r *http.Request) {
@@ -101,4 +104,8 @@ func (p *PlayerServer) getLeagueTable() []Player {
 	return []Player{
 		{"Chirs", 20},
 	}
+}
+
+func (s *StubPlayerStore) GetLeague() []Player {
+	return s.league
 }
