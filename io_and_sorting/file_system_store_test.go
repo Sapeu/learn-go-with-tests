@@ -7,14 +7,14 @@ import (
 	"testing"
 )
 
-func TestFileSystemStore(t *testing.T) {
+func TestFileSystemPlayerStore(t *testing.T) {
 	t.Run("/league from a reader", func(t *testing.T) {
 		database, cleanDatabase := createTempFile(t, `[
 			{"Name": "Cleo", "Wins": 10},
 			{"Name": "Chris", "Wins": 33}]`)
 		defer cleanDatabase()
 
-		store := FileSystemStore{database}
+		store := FileSystemPlayerStore{database}
 
 		got := store.GetLeague()
 
@@ -33,7 +33,7 @@ func TestFileSystemStore(t *testing.T) {
 			{"Name": "Chris", "Wins": 33}]`)
 		defer cleanDatabase()
 
-		store := FileSystemStore{database}
+		store := FileSystemPlayerStore{database}
 		got := store.GetPlayerScore("Chris")
 		want := 33
 		assertScoreEquals(t, got, want)
@@ -45,7 +45,7 @@ func TestFileSystemStore(t *testing.T) {
 			{"Name": "Chris", "Wins": 33}]`)
 		defer cleanDatabase()
 
-		store := FileSystemStore{database}
+		store := FileSystemPlayerStore{database}
 		store.RecordWin("Chris")
 		got := store.GetPlayerScore("Chris")
 		want := 34
