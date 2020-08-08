@@ -46,9 +46,9 @@ func TestFileSystemPlayerStore(t *testing.T) {
 		defer cleanDatabase()
 
 		store := FileSystemPlayerStore{database}
-		store.RecordWin("Chris")
-		got := store.GetPlayerScore("Chris")
-		want := 34
+		store.RecordWin("Pepper")
+		got := store.GetPlayerScore("Pepper")
+		want := 1
 		assertScoreEquals(t, got, want)
 	})
 }
