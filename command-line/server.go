@@ -22,12 +22,6 @@ type PlayerServer struct {
 	http.Handler
 }
 
-type StubPlayerStore struct {
-	scores   map[string]int
-	winCalls []string
-	league   League
-}
-
 // func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // 	router := http.NewServeMux()
 // 	router.Handle("/league", http.HandlerFunc(p.leagueHandler))
@@ -47,26 +41,6 @@ func (p *PlayerServer) showScore(w http.ResponseWriter, player string) {
 func (p *PlayerServer) processWin(w http.ResponseWriter, player string) {
 	p.store.RecordWin(player)
 	w.WriteHeader(http.StatusAccepted)
-}
-
-// func GetPlayerScore(name string) int {
-// 	if name == "Peper" {
-// 		return 20
-// 	}
-
-// 	if name == "Floyd" {
-// 		return 10
-// 	}
-// 	return 0
-// }
-
-func (s *StubPlayerStore) GetPlayerScore(name string) int {
-	score := s.scores[name]
-	return score
-}
-
-func (s *StubPlayerStore) RecordWin(name string) {
-	s.winCalls = append(s.winCalls, name)
 }
 
 func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request) {
@@ -104,8 +78,4 @@ func (p *PlayerServer) getLeagueTable() []Player {
 	return []Player{
 		{"Chirs", 20},
 	}
-}
-
-func (s *StubPlayerStore) GetLeague() League {
-	return s.league
 }
